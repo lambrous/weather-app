@@ -1,12 +1,4 @@
-function generateUrl(baseUrl, params) {
-	const queryString = Object.entries(params)
-		.map(
-			([key, value]) =>
-				`${key}=${Array.isArray(value) ? value.join(",") : value}`,
-		)
-		.join("&");
-	return `${baseUrl}?${encodeURI(queryString)}`;
-}
+import { generateUrl } from "./utils.js";
 
 export async function getLocations(query) {
 	const url = generateUrl("https://geocoding-api.open-meteo.com/v1/search", {
