@@ -1,3 +1,18 @@
+:root {
+	--color-bg: #fafafa;
+	--color-text: #171717;
+	--shade-10: color-mix(in oklch, var(--color-bg), var(--color-text) 10%);
+	--shade-20: color-mix(in oklch, var(--color-bg), var(--color-text) 20%);
+	--shade-30: color-mix(in oklch, var(--color-bg), var(--color-text) 30%);
+	--shade-40: color-mix(in oklch, var(--color-bg), var(--color-text) 40%);
+	--shade-50: color-mix(in oklch, var(--color-bg), var(--color-text) 50%);
+	--shade-60: color-mix(in oklch, var(--color-bg), var(--color-text) 60%);
+	--shade-70: color-mix(in oklch, var(--color-bg), var(--color-text) 70%);
+	--shade-80: color-mix(in oklch, var(--color-bg), var(--color-text) 80%);
+	--shade-90: color-mix(in oklch, var(--color-bg), var(--color-text) 90%);
+	--font-base: "Big Shoulders Text", system-ui, sans-serif;
+}
+
 *,
 *::before,
 *::after {
@@ -8,5 +23,101 @@
 }
 
 body {
-	min-height: 100vh;
+	height: 100vh;
+	background-image: radial-gradient(
+		circle,
+		var(--shade-10) 1px,
+		var(--color-bg) 1px
+	);
+	background-size: 1rem 1rem;
+	color: var(--shade-80);
+	font-family: var(--font-base);
+}
+
+ul {
+	list-style: none;
+}
+
+.hidden {
+	display: none !important;
+}
+
+.container {
+	width: min(50rem, calc(100vw - 2rem));
+	margin-inline: auto;
+	padding-block: min(4rem, 4vh);
+}
+
+#search {
+	--pad-inline: 1rem;
+	margin-inline: auto;
+	width: min(25rem, 90%);
+	font-size: 1.5rem;
+	border-radius: 0.25rem;
+	/* padding: 0.5rem 1rem; */
+	background-color: var(--color-bg);
+	border: 0.1em solid;
+	border-color: var(--shade-40);
+
+	.search-bar-container {
+		padding-inline: var(--pad-inline);
+	}
+
+	input {
+		display: block;
+		width: 100%;
+		border: none;
+		background-color: transparent;
+		color: inherit;
+		padding-block: 0.75rem;
+
+		&::placeholder {
+			color: var(--shade-40);
+			font-weight: 200;
+		}
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	&:focus-within {
+		border-color: var(--shade-90);
+		outline: 0.05em solid var(--shade-50);
+	}
+
+	.search-results:has(li) {
+		padding-block: 0.5rem;
+		position: relative;
+
+		&::before {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 50%;
+			width: calc(100% - 2 * var(--pad-inline));
+			height: 2px;
+			background-color: var(--shade-50);
+			transform: translateX(-50%);
+		}
+	}
+
+	.search-results li {
+		padding-block: 0.3em;
+		padding-inline: var(--pad-inline);
+		font-size: 1.375rem;
+		font-weight: 300;
+		color: var(--shade-70);
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+
+	.search-item {
+		cursor: pointer;
+
+		&:hover {
+			background-color: var(--shade-10);
+		}
+	}
 }

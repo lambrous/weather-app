@@ -6,9 +6,21 @@
 		<title>Weather App | The Odin Project</title>
 		<link rel="stylesheet" href="./style.css" />
 		<script type="module" src="./main.js"></script>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Text:wght@100..900&display=swap"
+			rel="stylesheet"
+		/>
 	</head>
 	<body>
-		<h1>Weather App</h1>
-		<input type="search" id="search-location" />
+		<div class="container">
+			<div id="search">
+				<div class="search-bar-container">
+					<input type="search" id="search-bar" placeholder="Search Location" />
+				</div>
+				<ul class="search-results"></ul>
+			</div>
+		</div>
 	</body>
 </html>

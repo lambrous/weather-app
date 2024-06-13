@@ -8,12 +8,12 @@ export function generateUrl(baseUrl, params) {
 	return `${baseUrl}?${encodeURI(queryString)}`;
 }
 
-export function debounce(func, timeout = 500) {
+export function debounce(func, delay = 500) {
 	let timer;
 	return (...args) => {
 		clearTimeout(timer);
 		timer = setTimeout(() => {
-			func.apply(this, args);
-		}, timeout);
+			func(...args);
+		}, delay);
 	};
 }

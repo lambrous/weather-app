@@ -1,15 +1,28 @@
 import { getLocations, getWeather } from "./weather.js";
-import { debounce } from "./utils.js";
+import * as searchBar from "./search.js";
 
-const searchInput = document.querySelector("#search-location");
-searchInput.addEventListener("input", debounce(displayWeather));
-
-async function displayWeather(event) {
+async function processLocationResults(query) {
 	try {
-		const [location] = await getLocations(event.target.value);
-		const weatherData = await getWeather(location.coordinates);
-		console.log(location.displayName, weatherData);
+		const locations = await getLocations(query);
+		const searchItems = buildSearchItems(locations);
+		searchBar.renderSearchResults(searchItems);
 	} catch (error) {
-		console.error(error);
+		searchBar.renderSearchResults([{ text: error.message }]);
 	}
 }
+
+function buildSearchItems(locations) {
+	return locations.map((location) => ({
+		text: location.displayName,
+		handler() {
+			showForecast(location.coordinates);
+		},
+	}));
+}
+
+async function showForecast(coordinates) {
+	const weather = await getWeather(coordinates);
+	console.log(weather);
+}
+
+searchBar.handleSearchInput(processLocationResults);
