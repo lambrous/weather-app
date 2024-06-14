@@ -27,6 +27,13 @@ export function renderSearchResults(list) {
 	searchResultsList.replaceChildren(...searchResultsItems);
 }
 
+export function renderLoader() {
+	const loader = document.createElement("li");
+	loader.classList.add("loader");
+	loader.textContent = "●●●";
+	searchResultsList.replaceChildren(loader);
+}
+
 export function handleSearchInput(onSearch) {
 	const handleInputChange = (event) => {
 		searchResultsList.replaceChildren();

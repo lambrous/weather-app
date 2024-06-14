@@ -2,6 +2,7 @@ import { getLocations, getWeather } from "./weather.js";
 import * as searchBar from "./search.js";
 
 async function processLocationResults(query) {
+	searchBar.renderLoader();
 	try {
 		const locations = await getLocations(query);
 		const searchItems = buildSearchItems(locations);

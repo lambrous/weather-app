@@ -120,4 +120,11 @@ ul {
 			background-color: var(--shade-10);
 		}
 	}
+
+	.search-results .loader {
+		text-align: center;
+		font-size: 1rem;
+		color: var(--shade-40);
+		letter-spacing: 0.5em;
+	}
 }
