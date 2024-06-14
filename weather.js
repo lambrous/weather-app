@@ -12,7 +12,8 @@ export async function getLocations(query) {
 	if (results)
 		return results.map((location) => ({
 			coordinates: { lon: location.longitude, lat: location.latitude },
-			displayName: `${location.name}, ${location.admin1}, ${location.country}`,
+			displayName: `${location.name}, ${location.admin1}`,
+			country: location.country,
 		}));
 
 	throw new Error("Location not found.");

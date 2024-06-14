@@ -1,5 +1,8 @@
 import { getLocations, getWeather } from "./weather.js";
+import * as content from "./content.js";
 import * as searchBar from "./search.js";
+
+let currentLocation;
 
 async function processLocationResults(query) {
 	searchBar.renderLoader();
@@ -14,9 +17,11 @@ async function processLocationResults(query) {
 
 function buildSearchItems(locations) {
 	return locations.map((location) => ({
-		text: location.displayName,
+		text: `${location.displayName}, ${location.country}`,
 		handler() {
-			showForecast(location.coordinates);
+			currentLocation = location;
+			content.displayLocation(location.displayName);
+			showForecast(currentLocation.coordinates);
 		},
 	}));
 }

@@ -128,3 +128,13 @@ ul {
 		letter-spacing: 0.5em;
 	}
 }
+
+.current {
+	margin-block: 4rem;
+	font-size: 1.5rem;
+
+	.location {
+		text-transform: uppercase;
+		margin-bottom: 0.125rem;
+	}
+}
