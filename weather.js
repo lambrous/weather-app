@@ -12,7 +12,8 @@ export async function getLocations(query) {
 	if (results)
 		return results.map((location) => ({
 			coordinates: { lon: location.longitude, lat: location.latitude },
-			displayName: `${location.name}, ${location.admin1}`,
+			displayName:
+				location.name + (location.admin1 ? `, ${location.admin1}` : ""),
 			country: location.country,
 		}));
 
@@ -31,6 +32,7 @@ export async function getWeather(coordinates) {
 			"precipitation",
 			"relative_humidity_2m",
 			"wind_speed_10m",
+			"is_day",
 		],
 	});
 	const response = await fetch(url, { mode: "cors" });
@@ -42,10 +44,50 @@ export async function getWeather(coordinates) {
 			dateTime: current.time,
 			temperature: Math.round(current.temperature_2m),
 			apparentTemp: `${Math.round(current.apparent_temperature)}${currentUnit.apparent_temperature}`,
-			precipitation: `${current.precipitation}${currentUnit.precipitation}`,
+			precipitation:
+				current.precipitation === 0
+					? "Clear"
+					: `${current.precipitation}${currentUnit.precipitation}`,
 			humidity: `${current.relative_humidity_2m}${currentUnit.relative_humidity_2m}`,
 			wind: `${current.wind_speed_10m}${currentUnit.wind_speed_10m}`,
-			weatherCode: current.weatherCode,
+			weatherCode: current.weather_code,
+			weatherCondition: getWeatherCondition(current.weather_code),
+			isDay: !!current.is_day,
 		},
 	};
+}
+
+function getWeatherCondition(weatherCode) {
+	const weatherConditions = {
+		0: "Clear sky",
+		1: "Mainly clear",
+		2: "Partly cloudy",
+		3: "Overcast",
+		45: "Fog",
+		48: "Depositing rime fog",
+		51: "Light drizzle",
+		53: "Moderate drizzle",
+		55: "Dense drizzle",
+		56: "Light freezing drizzle",
+		57: "Dense freezing drizzle",
+		61: "Slight rain",
+		63: "Moderate rain",
+		65: "Heavy rain",
+		66: "Light freezing rain",
+		67: "Heavy freezing rain",
+		71: "Slight snow fall",
+		73: "Moderate snow fall",
+		75: "Heavy snow fall",
+		77: "Snow grains",
+		80: "Slight rain showers",
+		81: "Moderate rain showers",
+		82: "Violent rain showers",
+		85: "Slight snow showers",
+		86: "Heavy snow showers",
+		95: "Thunderstorm",
+		96: "Thunderstorm with slight hail",
+		99: "Thunderstorm with heavy hail",
+	};
+
+	return weatherConditions[weatherCode];
 }

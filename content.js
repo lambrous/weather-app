@@ -23,6 +23,7 @@ export function renderCurrentForecast(weather) {
 		precipitation: document.querySelector(".current .precipitation .value"),
 		humidity: document.querySelector(".current .humidity .value"),
 		wind: document.querySelector(".current .wind .value"),
+		weatherCondition: document.querySelector(".current .condition"),
 	};
 
 	showForecast();
@@ -32,6 +33,7 @@ export function renderCurrentForecast(weather) {
 
 	const { dayOfWeek, time } = getFormattedDateTime(weather.dateTime);
 	currentDateTimeEl.textContent = `${dayOfWeek} ${time}`;
+	displayWeatherIcon(weather.weatherCode, weather.isDay);
 }
 
 export function renderLoader() {
@@ -46,4 +48,41 @@ export function renderLoader() {
 export function displayError(error) {
 	hideForecast();
 	currentDateTimeEl.textContent = error;
+}
+
+function displayWeatherIcon(weatherCode, isDay = true) {
+	const iconCode = {
+		0: isDay ? 100 : 150,
+		1: isDay ? 102 : 152,
+		2: isDay ? 103 : 153,
+		3: 104,
+		45: 501,
+		48: 514,
+		51: 305,
+		53: 309,
+		55: 307,
+		56: 2214,
+		57: 2214,
+		61: 305,
+		63: 306,
+		65: 307,
+		66: 313,
+		67: 313,
+		71: 400,
+		73: 401,
+		75: 402,
+		77: 499,
+		80: 314,
+		81: 315,
+		82: 316,
+		85: 408,
+		86: 410,
+		95: 302,
+		96: 304,
+		99: 304,
+	};
+	const container = document.querySelector(".weather-icon");
+	const icon = document.createElement("i");
+	icon.classList.add("icon", `qi-${iconCode[weatherCode]}`);
+	container.replaceChildren(icon);
 }
