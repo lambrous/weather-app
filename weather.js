@@ -25,6 +25,7 @@ export async function getWeather(coordinates) {
 		latitude: coordinates.lat,
 		longitude: coordinates.lon,
 		timezone: "auto",
+		forecast_hours: 8,
 		current: [
 			"temperature_2m",
 			"apparent_temperature",
@@ -34,10 +35,27 @@ export async function getWeather(coordinates) {
 			"wind_speed_10m",
 			"is_day",
 		],
+		hourly: [
+			"temperature_2m",
+			"precipitation_probability",
+			"weather_code",
+			"is_day",
+		],
+		daily: [
+			"weather_code",
+			"temperature_2m_max",
+			"temperature_2m_min",
+			"precipitation_probability_max",
+		],
 	});
 	const response = await fetch(url, { mode: "cors" });
 	if (!response.ok) throw new Error("Failed to fetch weather data.");
-	const { current, current_units: currentUnit } = await response.json();
+	const {
+		current,
+		current_units: currentUnit,
+		hourly,
+		daily,
+	} = await response.json();
 
 	return {
 		current: {
@@ -54,6 +72,13 @@ export async function getWeather(coordinates) {
 			weatherCondition: getWeatherCondition(current.weather_code),
 			isDay: !!current.is_day,
 		},
+		hourly: hourly.time.map((time, index) => ({
+			time,
+			temperature: Math.round(hourly.temperature_2m[index]),
+			weatherCode: hourly.weather_code[index],
+			precipitation: hourly.precipitation_probability[index],
+			isDay: hourly.is_day[index],
+		})),
 	};
 }
 

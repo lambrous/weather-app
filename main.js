@@ -31,6 +31,10 @@ async function showForecast(coordinates) {
 	try {
 		const weather = await getWeather(coordinates);
 		content.renderCurrentForecast(weather.current);
+
+		const [_, ...hourlyForecast] = weather.hourly;
+		content.renderHourlyForecast(hourlyForecast);
+		console.log(weather);
 	} catch (error) {
 		content.displayError(error.message);
 	}

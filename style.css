@@ -133,7 +133,7 @@ ul {
 	}
 }
 
-.current {
+.weather {
 	margin-block: 8rem;
 	font-size: 1.5rem;
 
@@ -141,12 +141,13 @@ ul {
 		text-transform: uppercase;
 		margin-bottom: 0.125rem;
 	}
+}
 
-	#forecast {
-		margin-top: 1.5rem;
-		display: flex;
-		justify-content: space-between;
-	}
+#forecast .current {
+	margin-top: 1.5rem;
+	margin-bottom: 4.5rem;
+	display: flex;
+	justify-content: space-between;
 
 	.temperature {
 		display: flex;
@@ -171,7 +172,7 @@ ul {
 	}
 
 	.weather-icon {
-		font-size: 0.6em;
+		font-size: 0.5em;
 		color: var(--shade-80);
 	}
 
@@ -189,5 +190,61 @@ ul {
 	.info {
 		margin-top: 0.25em;
 		font-weight: 300;
+	}
+}
+
+#forecast .heading {
+	font-size: 1.25rem;
+	text-transform: uppercase;
+}
+
+#forecast .modules {
+	margin-top: 1.5rem;
+	margin-bottom: 4.5rem;
+	display: flex;
+	justify-content: space-between;
+
+	li {
+		text-align: center;
+	}
+
+	.weather-icon {
+		font-size: 1.5rem;
+		color: var(--shade-70);
+	}
+
+	.day-time {
+		font-size: 1.25rem;
+		color: var(--shade-70);
+		font-weight: 300;
+		text-transform: uppercase;
+		margin-top: 0.3em;
+		margin-bottom: 0.625rem;
+	}
+
+	.temperature {
+		font-size: 1.25rem;
+		font-weight: 600;
+		color: var(--shade-90);
+		margin-bottom: 0.3em;
+		font-weight: 600;
+	}
+
+	.precipitation {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-weight: 300;
+		font-size: 1.125rem;
+
+		.icon {
+			display: flex;
+			align-items: center;
+		}
+
+		.icon svg {
+			fill: var(--shade-60);
+			height: 1em;
+		}
 	}
 }

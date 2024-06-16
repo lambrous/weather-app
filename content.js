@@ -1,7 +1,8 @@
 import { getFormattedDateTime } from "./utils.js";
 
 const forecastContent = document.querySelector("#forecast");
-const currentDateTimeEl = document.querySelector(".current .time");
+const currentDateTimeEl = document.querySelector(".weather .time");
+const hourlyForecastContainer = document.querySelector("#forecast .hourly");
 
 export function hideForecast() {
 	forecastContent.classList.add("hidden");
@@ -12,7 +13,7 @@ export function showForecast() {
 }
 
 export function displayLocation(location) {
-	const locationEl = document.querySelector(".current .location");
+	const locationEl = document.querySelector(".weather .location");
 	locationEl.textContent = location;
 }
 
@@ -33,14 +34,15 @@ export function renderCurrentForecast(weather) {
 
 	const { dayOfWeek, time } = getFormattedDateTime(weather.dateTime);
 	currentDateTimeEl.textContent = `${dayOfWeek} ${time}`;
-	displayWeatherIcon(weather.weatherCode, weather.isDay);
+
+	const weatherIcon = document.querySelector(".current .weather-icon");
+	weatherIcon.replaceChildren(
+		createWeatherIcon(weather.weatherCode, weather.isDay),
+	);
 }
 
 export function renderLoader() {
-	const loader = document.createElement("span");
-	loader.classList.add("loader");
-	loader.textContent = ". . . . . . .";
-
+	const loader = createTextElement(". . . . . . .", ["loader"], "span");
 	hideForecast();
 	currentDateTimeEl.replaceChildren(loader);
 }
@@ -50,7 +52,79 @@ export function displayError(error) {
 	currentDateTimeEl.textContent = error;
 }
 
-function displayWeatherIcon(weatherCode, isDay = true) {
+function renderWeatherModules(container, headingText) {
+	return (weather) => {
+		const heading = createTextElement(headingText, ["heading"]);
+		const weatherList = document.createElement("ul");
+		weatherList.classList.add("modules");
+		for (const module of weather) {
+			const weatherItem = createWeatherModuleItem(module);
+			weatherList.append(weatherItem);
+		}
+		container.replaceChildren(heading, weatherList);
+	};
+}
+
+export const renderHourlyForecast = renderWeatherModules(
+	hourlyForecastContainer,
+	"Hourly",
+);
+
+function createWeatherModuleItem({
+	weatherCode,
+	temperature,
+	precipitation,
+	isDay,
+	date,
+	time,
+}) {
+	const weatherItem = document.createElement("li");
+
+	const weatherIcon = createTextElement("", ["weather-icon"], "div");
+	weatherIcon.replaceChildren(createWeatherIcon(weatherCode, isDay));
+
+	const dateStr = getFormattedDateTime(date ? date : time, "short");
+	const dayTimeEl = createTextElement(date ? dateStr.dayOfWeek : dateStr.time, [
+		"day-time",
+	]);
+
+	const weatherTemperature = createTextElement(`${temperature}°`, [
+		"temperature",
+	]);
+
+	const weatherPrecipitation = createPrecipitationModuleEL(precipitation);
+
+	weatherItem.append(
+		weatherIcon,
+		dayTimeEl,
+		weatherTemperature,
+		weatherPrecipitation,
+	);
+	return weatherItem;
+}
+
+function createPrecipitationModuleEL(value) {
+	const container = createTextElement("", ["precipitation"]);
+	if (!value) return container;
+
+	const weatherPrecipitationIcon = createTextElement("", ["icon"], "span");
+	const precipitationIcon = createSvgElement("svg", {
+		viewBox: "0 0 24 24",
+		xmlns: "http://www.w3.org/2000/svg",
+	});
+	const precipitationSvgPath = createSvgElement("path", {
+		d: "M7 .565c4.667 6.09 7 10.423 7 13a7 7 0 1 1-14 0c0-2.577 2.333-6.91 7-13",
+	});
+	container
+		.appendChild(weatherPrecipitationIcon)
+		.appendChild(precipitationIcon)
+		.appendChild(precipitationSvgPath);
+	const precipitationValue = createTextElement(`${value}%`, ["value"], "span");
+	container.append(precipitationValue);
+	return container;
+}
+
+function createWeatherIcon(weatherCode, isDay = true) {
 	const iconCode = {
 		0: isDay ? 100 : 150,
 		1: isDay ? 102 : 152,
@@ -81,8 +155,23 @@ function displayWeatherIcon(weatherCode, isDay = true) {
 		96: 304,
 		99: 304,
 	};
-	const container = document.querySelector(".weather-icon");
 	const icon = document.createElement("i");
 	icon.classList.add("icon", `qi-${iconCode[weatherCode]}`);
-	container.replaceChildren(icon);
+	return icon;
+}
+
+function createSvgElement(tagName, attributes) {
+	const svgNS = "http://www.w3.org/2000/svg";
+	const element = document.createElementNS(svgNS, tagName);
+	for (const attribute in attributes) {
+		element.setAttribute(attribute, attributes[attribute]);
+	}
+	return element;
+}
+
+function createTextElement(text, classList = [], tagName = "p") {
+	const element = document.createElement(tagName);
+	if (text) element.textContent = text;
+	if (classList.length) element.classList.add(...classList);
+	return element;
 }

@@ -22,7 +22,13 @@ export function getFormattedDateTime(dateStr, format = "long") {
 	const date = new Date(dateStr);
 
 	const dayOptions = { weekday: format };
-	const timeOptions = { hour: "numeric", minute: "numeric", hour12: true };
+	let timeOptions;
+
+	if (format === "long") {
+		timeOptions = { hour: "numeric", minute: "numeric", hour12: true };
+	} else {
+		timeOptions = { hour: "numeric", hour12: true };
+	}
 
 	const dayOfWeek = new Intl.DateTimeFormat("en-US", dayOptions).format(date);
 	const time = new Intl.DateTimeFormat("en-US", timeOptions).format(date);
