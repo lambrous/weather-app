@@ -27,8 +27,13 @@ function buildSearchItems(locations) {
 }
 
 async function showForecast(coordinates) {
-	const weather = await getWeather(coordinates);
-	content.renderCurrentForecast(weather.current);
+	content.renderLoader();
+	try {
+		const weather = await getWeather(coordinates);
+		content.renderCurrentForecast(weather.current);
+	} catch (error) {
+		content.displayError(error.message);
+	}
 }
 
 searchBar.handleSearchInput(processLocationResults);

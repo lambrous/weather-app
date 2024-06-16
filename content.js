@@ -33,3 +33,17 @@ export function renderCurrentForecast(weather) {
 	const { dayOfWeek, time } = getFormattedDateTime(weather.dateTime);
 	currentDateTimeEl.textContent = `${dayOfWeek} ${time}`;
 }
+
+export function renderLoader() {
+	const loader = document.createElement("span");
+	loader.classList.add("loader");
+	loader.textContent = ". . . . . . .";
+
+	hideForecast();
+	currentDateTimeEl.replaceChildren(loader);
+}
+
+export function displayError(error) {
+	hideForecast();
+	currentDateTimeEl.textContent = error;
+}
