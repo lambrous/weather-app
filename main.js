@@ -28,7 +28,7 @@ function buildSearchItems(locations) {
 
 async function showForecast(coordinates) {
 	const weather = await getWeather(coordinates);
-	console.log(weather);
+	content.renderCurrentForecast(weather.current);
 }
 
 searchBar.handleSearchInput(processLocationResults);

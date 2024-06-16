@@ -46,6 +46,7 @@ ul {
 	width: min(50rem, calc(100vw - 2rem));
 	margin-inline: auto;
 	padding-block: min(4rem, 4vh);
+	position: relative;
 }
 
 #search {
@@ -54,10 +55,12 @@ ul {
 	width: min(25rem, 90%);
 	font-size: 1.5rem;
 	border-radius: 0.25rem;
-	/* padding: 0.5rem 1rem; */
 	background-color: var(--color-bg);
 	border: 0.1em solid;
 	border-color: var(--shade-40);
+	position: fixed;
+	left: 50%;
+	translate: -50%;
 
 	.search-bar-container {
 		padding-inline: var(--pad-inline);
@@ -84,6 +87,7 @@ ul {
 	&:focus-within {
 		border-color: var(--shade-90);
 		outline: 0.05em solid var(--shade-50);
+		box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 	}
 
 	.search-results:has(li) {
@@ -130,11 +134,60 @@ ul {
 }
 
 .current {
-	margin-block: 4rem;
+	margin-block: 8rem;
 	font-size: 1.5rem;
 
 	.location {
 		text-transform: uppercase;
 		margin-bottom: 0.125rem;
+	}
+
+	#forecast {
+		margin-top: 1.5rem;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.temperature {
+		display: flex;
+		align-items: center;
+		gap: 2rem;
+		font-size: 9rem;
+		line-height: 1.1;
+		color: var(--shade-90);
+	}
+
+	.temperature .value {
+		font-weight: 800;
+	}
+
+	.temperature .unit {
+		font-weight: 200;
+	}
+
+	.apparent {
+		font-size: 2rem;
+		font-weight: 200;
+	}
+
+	.weather-icon {
+		font-size: 0.6em;
+		color: var(--shade-80);
+	}
+
+	.more-info {
+		text-align: right;
+		margin-top: 0.75rem;
+	}
+
+	.condition {
+		font-size: 1.875rem;
+		font-weight: 600;
+		margin-bottom: 0.5em;
+	}
+
+	.info {
+		margin-top: 0.25em;
+		font-weight: 300;
 	}
 }
