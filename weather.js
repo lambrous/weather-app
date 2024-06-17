@@ -26,6 +26,7 @@ export async function getWeather(coordinates) {
 		longitude: coordinates.lon,
 		timezone: "auto",
 		forecast_hours: 8,
+		forecast_days: 8,
 		current: [
 			"temperature_2m",
 			"apparent_temperature",
@@ -78,6 +79,15 @@ export async function getWeather(coordinates) {
 			weatherCode: hourly.weather_code[index],
 			precipitation: hourly.precipitation_probability[index],
 			isDay: hourly.is_day[index],
+		})),
+		daily: daily.time.map((day, index) => ({
+			date: day,
+			temperature: {
+				min: Math.round(daily.temperature_2m_min[index]),
+				max: Math.round(daily.temperature_2m_max[index]),
+			},
+			precipitation: daily.precipitation_probability_max[index],
+			weatherCode: daily.weather_code[index],
 		})),
 	};
 }

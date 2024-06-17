@@ -58,7 +58,7 @@ ul {
 	background-color: var(--color-bg);
 	border: 0.1em solid;
 	border-color: var(--shade-40);
-	position: fixed;
+	position: absolute;
 	left: 50%;
 	translate: -50%;
 
@@ -134,7 +134,7 @@ ul {
 }
 
 .weather {
-	margin-block: 8rem;
+	margin-top: 8rem;
 	font-size: 1.5rem;
 
 	.location {
@@ -200,12 +200,12 @@ ul {
 
 #forecast .modules {
 	margin-top: 1.5rem;
-	margin-bottom: 4.5rem;
 	display: flex;
 	justify-content: space-between;
 
 	li {
 		text-align: center;
+		flex-basis: 3rem;
 	}
 
 	.weather-icon {
@@ -230,6 +230,19 @@ ul {
 		font-weight: 600;
 	}
 
+	.temperature:has(.min) {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.25em;
+
+		.min {
+			font-weight: 300;
+			color: var(--shade-60);
+			font-size: 1.125rem;
+		}
+	}
+
 	.precipitation {
 		display: flex;
 		align-items: center;
@@ -247,4 +260,8 @@ ul {
 			height: 1em;
 		}
 	}
+}
+
+#forecast .hourly {
+	margin-bottom: 4.5rem;
 }

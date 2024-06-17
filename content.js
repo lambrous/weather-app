@@ -2,7 +2,6 @@ import { getFormattedDateTime } from "./utils.js";
 
 const forecastContent = document.querySelector("#forecast");
 const currentDateTimeEl = document.querySelector(".weather .time");
-const hourlyForecastContainer = document.querySelector("#forecast .hourly");
 
 export function hideForecast() {
 	forecastContent.classList.add("hidden");
@@ -52,7 +51,8 @@ export function displayError(error) {
 	currentDateTimeEl.textContent = error;
 }
 
-function renderWeatherModules(container, headingText) {
+function renderWeatherModules(containerQuery, headingText) {
+	const container = document.querySelector(containerQuery);
 	return (weather) => {
 		const heading = createTextElement(headingText, ["heading"]);
 		const weatherList = document.createElement("ul");
@@ -66,8 +66,13 @@ function renderWeatherModules(container, headingText) {
 }
 
 export const renderHourlyForecast = renderWeatherModules(
-	hourlyForecastContainer,
+	"#forecast .hourly",
 	"Hourly",
+);
+
+export const renderDailyForecast = renderWeatherModules(
+	"#forecast .daily",
+	"This Week",
 );
 
 function createWeatherModuleItem({
@@ -88,16 +93,24 @@ function createWeatherModuleItem({
 		"day-time",
 	]);
 
-	const weatherTemperature = createTextElement(`${temperature}°`, [
-		"temperature",
-	]);
+	const tempContainer = createTextElement("", ["temperature"], "div");
+	if (Object.hasOwn(temperature, "max") && Object.hasOwn(temperature, "min")) {
+		const maxTemp = createTextElement(`${temperature.max}°`, ["max"], "span");
+		const minTemp = createTextElement(`${temperature.min}°`, ["min"], "span");
+		tempContainer.append(maxTemp, minTemp);
+	} else {
+		const weatherTemperature = createTextElement(`${temperature}°`, [
+			"temperature",
+		]);
+		tempContainer.append(weatherTemperature);
+	}
 
 	const weatherPrecipitation = createPrecipitationModuleEL(precipitation);
 
 	weatherItem.append(
 		weatherIcon,
 		dayTimeEl,
-		weatherTemperature,
+		tempContainer,
 		weatherPrecipitation,
 	);
 	return weatherItem;

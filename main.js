@@ -19,11 +19,15 @@ function buildSearchItems(locations) {
 	return locations.map((location) => ({
 		text: `${location.displayName}, ${location.country}`,
 		handler() {
-			currentLocation = location;
-			content.displayLocation(location.displayName);
-			showForecast(currentLocation.coordinates);
+			switchLocation(location);
 		},
 	}));
+}
+
+function switchLocation(location) {
+	currentLocation = location;
+	content.displayLocation(location.displayName);
+	showForecast(currentLocation.coordinates);
 }
 
 async function showForecast(coordinates) {
@@ -32,11 +36,14 @@ async function showForecast(coordinates) {
 		const weather = await getWeather(coordinates);
 		content.renderCurrentForecast(weather.current);
 
-		const [_, ...hourlyForecast] = weather.hourly;
+		const [, ...hourlyForecast] = weather.hourly;
 		content.renderHourlyForecast(hourlyForecast);
-		console.log(weather);
+
+		const [, ...dailyForecast] = weather.daily;
+		content.renderDailyForecast(dailyForecast);
 	} catch (error) {
 		content.displayError(error.message);
+		console.error(error);
 	}
 }
 
