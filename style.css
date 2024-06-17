@@ -12,6 +12,11 @@
 	--shade-90: color-mix(in oklch, var(--color-bg), var(--color-text) 90%);
 	--font-base: "Roboto Condensed", sans-serif;
 	--font-heading: "Big Shoulders Display", system-ui, sans-serif;
+
+	&[data-theme="night"] {
+		--color-text: #fff;
+		--color-bg: #111;
+	}
 }
 
 *,

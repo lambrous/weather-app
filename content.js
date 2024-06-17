@@ -38,6 +38,7 @@ export function renderCurrentForecast(weather) {
 	weatherIcon.replaceChildren(
 		createWeatherIcon(weather.weatherCode, weather.isDay),
 	);
+	document.documentElement.dataset.theme = weather.isDay ? "day" : "night";
 }
 
 export function renderLoader() {
