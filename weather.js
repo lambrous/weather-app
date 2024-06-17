@@ -66,9 +66,9 @@ export async function getWeather(coordinates) {
 			precipitation:
 				current.precipitation === 0
 					? "Clear"
-					: `${current.precipitation}${currentUnit.precipitation}`,
+					: `${current.precipitation} ${currentUnit.precipitation}`,
 			humidity: `${current.relative_humidity_2m}${currentUnit.relative_humidity_2m}`,
-			wind: `${current.wind_speed_10m}${currentUnit.wind_speed_10m}`,
+			wind: `${current.wind_speed_10m} ${currentUnit.wind_speed_10m}`,
 			weatherCode: current.weather_code,
 			weatherCondition: getWeatherCondition(current.weather_code),
 			isDay: !!current.is_day,
@@ -125,4 +125,19 @@ function getWeatherCondition(weatherCode) {
 	};
 
 	return weatherConditions[weatherCode];
+}
+
+export async function getIpLocation() {
+	const response = await fetch("http://ip-api.com/json/", {
+		mode: "cors",
+	});
+	if (!response.ok) throw new Error("Failed to fetch IP location.");
+	const location = await response.json();
+	return {
+		coordinates: {
+			lat: location.lat,
+			lon: location.lon,
+		},
+		displayName: `${location.city}, ${location.regionName}`,
+	};
 }

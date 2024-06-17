@@ -1,4 +1,4 @@
-import { getLocations, getWeather } from "./weather.js";
+import { getIpLocation, getLocations, getWeather } from "./weather.js";
 import * as content from "./content.js";
 import * as searchBar from "./search.js";
 
@@ -26,11 +26,12 @@ function buildSearchItems(locations) {
 
 function switchLocation(location) {
 	currentLocation = location;
-	content.displayLocation(location.displayName);
-	showForecast(currentLocation.coordinates);
+	content.displayLocation(currentLocation.displayName);
+	showForecast();
+	localStorage.setItem("location", JSON.stringify(currentLocation));
 }
 
-async function showForecast(coordinates) {
+async function showForecast(coordinates = currentLocation.coordinates) {
 	content.renderLoader();
 	try {
 		const weather = await getWeather(coordinates);
@@ -47,4 +48,19 @@ async function showForecast(coordinates) {
 	}
 }
 
+async function onLoad() {
+	try {
+		const locationData = localStorage.getItem("location");
+		const location = locationData
+			? JSON.parse(locationData)
+			: await getIpLocation();
+		switchLocation(location);
+	} catch (error) {
+		content.displayError(error.message);
+		console.error(error);
+	}
+}
+
 searchBar.handleSearchInput(processLocationResults);
+
+document.addEventListener("DOMContentLoaded", onLoad);
