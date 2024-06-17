@@ -10,7 +10,8 @@
 	--shade-70: color-mix(in oklch, var(--color-bg), var(--color-text) 70%);
 	--shade-80: color-mix(in oklch, var(--color-bg), var(--color-text) 80%);
 	--shade-90: color-mix(in oklch, var(--color-bg), var(--color-text) 90%);
-	--font-base: "Big Shoulders Text", system-ui, sans-serif;
+	--font-base: "Roboto Condensed", sans-serif;
+	--font-heading: "Big Shoulders Display", system-ui, sans-serif;
 }
 
 *,
@@ -43,7 +44,7 @@ ul {
 }
 
 .container {
-	width: min(50rem, calc(100vw - 2rem));
+	width: min(45rem, calc(100vw - 2rem));
 	margin-inline: auto;
 	padding-block: min(4rem, 4vh);
 	position: relative;
@@ -52,8 +53,8 @@ ul {
 #search {
 	--pad-inline: 1rem;
 	margin-inline: auto;
-	width: min(25rem, 90%);
-	font-size: 1.5rem;
+	width: min(26rem, 90%);
+	font-size: 1.25rem;
 	border-radius: 0.25rem;
 	background-color: var(--color-bg);
 	border: 0.1em solid;
@@ -76,7 +77,8 @@ ul {
 
 		&::placeholder {
 			color: var(--shade-40);
-			font-weight: 200;
+			font-size: 1rem;
+			text-transform: uppercase;
 		}
 
 		&:focus {
@@ -107,10 +109,9 @@ ul {
 	}
 
 	.search-results li {
-		padding-block: 0.3em;
+		padding-block: 0.5em;
 		padding-inline: var(--pad-inline);
-		font-size: 1.375rem;
-		font-weight: 300;
+		font-size: 1.125rem;
 		color: var(--shade-70);
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -135,27 +136,37 @@ ul {
 
 .weather {
 	margin-top: 8rem;
-	font-size: 1.5rem;
+
+	.location,
+	.current .temperature,
+	.current .condition,
+	.heading {
+		font-family: var(--font-heading);
+	}
 
 	.location {
+		font-size: 1.5rem;
 		text-transform: uppercase;
 		margin-bottom: 0.125rem;
+		font-weight: 600;
 	}
 }
 
 #forecast .current {
-	margin-top: 1.5rem;
-	margin-bottom: 4.5rem;
+	margin-top: 1rem;
 	display: flex;
 	justify-content: space-between;
+
+	.temperature-container {
+		color: var(--shade-90);
+	}
 
 	.temperature {
 		display: flex;
 		align-items: center;
-		gap: 2rem;
-		font-size: 9rem;
+		gap: 2.5rem;
+		font-size: 8.5rem;
 		line-height: 1.1;
-		color: var(--shade-90);
 	}
 
 	.temperature .value {
@@ -167,12 +178,13 @@ ul {
 	}
 
 	.apparent {
-		font-size: 2rem;
-		font-weight: 200;
+		font-size: 1.25rem;
+		font-weight: 300;
+		text-transform: uppercase;
 	}
 
 	.weather-icon {
-		font-size: 0.5em;
+		font-size: 0.45em;
 		color: var(--shade-80);
 	}
 
@@ -182,20 +194,33 @@ ul {
 	}
 
 	.condition {
-		font-size: 1.875rem;
+		font-size: 1.75rem;
 		font-weight: 600;
 		margin-bottom: 0.5em;
 	}
 
 	.info {
-		margin-top: 0.25em;
+		font-size: 1.25rem;
+		margin-top: 0.5em;
 		font-weight: 300;
+		display: flex;
+		align-items: end;
+		justify-content: end;
+		gap: 0.35em;
+	}
+
+	.info .value {
+		font-weight: 400;
 	}
 }
 
 #forecast .heading {
 	font-size: 1.25rem;
 	text-transform: uppercase;
+}
+
+#forecast :is(.hourly, .daily) {
+	margin-top: 3.5rem;
 }
 
 #forecast .modules {
@@ -214,9 +239,8 @@ ul {
 	}
 
 	.day-time {
-		font-size: 1.25rem;
+		font-size: 1rem;
 		color: var(--shade-70);
-		font-weight: 300;
 		text-transform: uppercase;
 		margin-top: 0.3em;
 		margin-bottom: 0.625rem;
@@ -248,7 +272,7 @@ ul {
 		align-items: center;
 		justify-content: center;
 		font-weight: 300;
-		font-size: 1.125rem;
+		font-size: 1rem;
 
 		.icon {
 			display: flex;
@@ -257,11 +281,7 @@ ul {
 
 		.icon svg {
 			fill: var(--shade-60);
-			height: 1em;
+			height: 0.8em;
 		}
 	}
-}
-
-#forecast .hourly {
-	margin-bottom: 4.5rem;
 }
