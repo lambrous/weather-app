@@ -20,8 +20,8 @@ export async function getLocations(query) {
 	throw new Error("Location not found.");
 }
 
-export async function getWeather(coordinates) {
-	const url = generateUrl("https://api.open-meteo.com/v1/forecast", {
+export async function getWeather(coordinates, useMetric = true) {
+	const params = {
 		latitude: coordinates.lat,
 		longitude: coordinates.lon,
 		timezone: "auto",
@@ -48,7 +48,15 @@ export async function getWeather(coordinates) {
 			"temperature_2m_min",
 			"precipitation_probability_max",
 		],
-	});
+	};
+
+	if (!useMetric) {
+		params.temperature_unit = "fahrenheit";
+		params.wind_speed_unit = "mph";
+		params.precipitation_unit = "inch";
+	}
+
+	const url = generateUrl("https://api.open-meteo.com/v1/forecast", params);
 	const response = await fetch(url, { mode: "cors" });
 	if (!response.ok) throw new Error("Failed to fetch weather data.");
 	const {
@@ -62,6 +70,7 @@ export async function getWeather(coordinates) {
 		current: {
 			dateTime: current.time,
 			temperature: Math.round(current.temperature_2m),
+			temperatureUnit: currentUnit.temperature_2m,
 			apparentTemp: `${Math.round(current.apparent_temperature)}${currentUnit.apparent_temperature}`,
 			precipitation:
 				current.precipitation === 0

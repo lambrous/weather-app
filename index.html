@@ -27,17 +27,25 @@
 				<ul class="search-results"></ul>
 			</div>
 			<div class="weather">
-				<div class="header">
-					<p class="location"></p>
-					<div class="loader-container"></div>
-				</div>
+				<header>
+					<div class="location-container">
+						<p class="location"></p>
+						<div class="loader-container"></div>
+					</div>
+					<div>
+						<button type="button" class="toggle-unit">
+							<span class="unit metric active">&deg;C</span>
+							<span class="unit imperial">&deg;F</span>
+						</button>
+					</div>
+				</header>
 				<p class="time"></p>
 				<div id="forecast" class="hidden">
 					<div class="current">
 						<div class="temperature-container">
 							<div class="temperature">
 								<p class="text">
-									<span class="value">- -</span><span class="unit">&deg;C</span>
+									<span class="value">- -</span><span class="unit"></span>
 								</p>
 								<div class="weather-icon"></div>
 							</div>

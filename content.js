@@ -20,6 +20,7 @@ export function displayLocation(location) {
 export function renderCurrentForecast(weather) {
 	const element = {
 		temperature: document.querySelector(".current .temperature .value"),
+		temperatureUnit: document.querySelector(".current .temperature .unit"),
 		apparentTemp: document.querySelector(".current .apparent .value"),
 		precipitation: document.querySelector(".current .precipitation .value"),
 		humidity: document.querySelector(".current .humidity .value"),
@@ -100,9 +101,7 @@ function createWeatherModuleItem({
 	const weatherItem = document.createElement("li");
 
 	const weatherIcon = createTextElement("", ["weather-icon"], "div");
-	weatherIcon.replaceChildren(
-		createWeatherIcon(weatherCode, { isDay, fill: true }),
-	);
+	weatherIcon.replaceChildren(createWeatherIcon(weatherCode, { isDay }));
 
 	const dateStr = getFormattedDateTime(date ? date : time, "short");
 	const dayTimeEl = createTextElement(date ? dateStr.dayOfWeek : dateStr.time, [
