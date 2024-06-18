@@ -89,6 +89,10 @@ ul {
 		&:focus {
 			outline: none;
 		}
+
+		&::-webkit-search-cancel-button {
+			display: none;
+		}
 	}
 
 	&:focus-within {
@@ -131,11 +135,11 @@ ul {
 		}
 	}
 
-	.search-results .loader {
-		text-align: center;
-		font-size: 1rem;
-		color: var(--shade-40);
-		letter-spacing: 0.5em;
+	.loader-container {
+		position: absolute;
+		right: var(--pad-inline);
+		top: 50%;
+		translate: 0 -50%;
 	}
 }
 
@@ -154,6 +158,12 @@ ul {
 		text-transform: uppercase;
 		margin-bottom: 0.125rem;
 		font-weight: 600;
+	}
+
+	.header {
+		display: flex;
+		align-items: center;
+		gap: 0.7em;
 	}
 }
 
@@ -245,7 +255,7 @@ ul {
 
 	.day-time {
 		font-size: 1rem;
-		color: var(--shade-70);
+		color: var(--shade-80);
 		text-transform: uppercase;
 		margin-top: 0.3em;
 		margin-bottom: 0.625rem;
@@ -288,5 +298,23 @@ ul {
 			fill: var(--shade-60);
 			height: 0.8em;
 		}
+	}
+}
+
+.loader {
+	--width: 1.15rem;
+	width: var(--width);
+	aspect-ratio: 1 / 1;
+	border: calc(var(--width) / 2.5) dotted var(--shade-60);
+	border-radius: 50%;
+	animation: rotation 1.25s linear infinite;
+}
+
+@keyframes rotation {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
 	}
 }

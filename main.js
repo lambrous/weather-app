@@ -5,7 +5,7 @@ import * as searchBar from "./search.js";
 let currentLocation;
 
 async function processLocationResults(query) {
-	searchBar.renderLoader();
+	searchBar.loader.start();
 	try {
 		const locations = await getLocations(query);
 		const searchItems = buildSearchItems(locations);
@@ -13,6 +13,7 @@ async function processLocationResults(query) {
 	} catch (error) {
 		searchBar.renderSearchResults([{ text: error.message }]);
 	}
+	searchBar.loader.stop();
 }
 
 function buildSearchItems(locations) {
@@ -32,7 +33,7 @@ function switchLocation(location) {
 }
 
 async function showForecast(coordinates = currentLocation.coordinates) {
-	content.renderLoader();
+	content.loader.start();
 	try {
 		const weather = await getWeather(coordinates);
 		content.renderCurrentForecast(weather.current);
@@ -46,6 +47,7 @@ async function showForecast(coordinates = currentLocation.coordinates) {
 		content.displayError(error.message);
 		console.error(error);
 	}
+	content.loader.stop();
 }
 
 async function onLoad() {

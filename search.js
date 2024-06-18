@@ -1,3 +1,4 @@
+import { createLoader } from "./content.js";
 import { debounce } from "./utils.js";
 
 const searchInput = document.querySelector("#search-bar");
@@ -27,12 +28,9 @@ export function renderSearchResults(list) {
 	searchResultsList.replaceChildren(...searchResultsItems);
 }
 
-export function renderLoader() {
-	const loader = document.createElement("li");
-	loader.classList.add("loader");
-	loader.textContent = "●●●";
-	searchResultsList.replaceChildren(loader);
-}
+export const loader = createLoader(
+	searchContainer.querySelector(".loader-container"),
+);
 
 export function handleSearchInput(onSearch) {
 	const handleInputChange = (event) => {

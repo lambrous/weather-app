@@ -4,6 +4,7 @@ const forecastContent = document.querySelector("#forecast");
 const currentDateTimeEl = document.querySelector(".weather .time");
 
 export function hideForecast() {
+	currentDateTimeEl.textContent = "";
 	forecastContent.classList.add("hidden");
 }
 
@@ -41,11 +42,23 @@ export function renderCurrentForecast(weather) {
 	document.documentElement.dataset.theme = weather.isDay ? "day" : "night";
 }
 
-export function renderLoader() {
-	const loader = createTextElement(". . . . . . .", ["loader"], "span");
-	hideForecast();
-	currentDateTimeEl.replaceChildren(loader);
+export function createLoader(containerEl, onStart, onStop) {
+	const start = () => {
+		containerEl.classList.add("loader");
+		if (onStart) onStart();
+	};
+	const stop = () => {
+		containerEl.classList.remove("loader");
+		if (onStop) onStop();
+	};
+
+	return { start, stop };
 }
+
+export const loader = createLoader(
+	document.querySelector(".weather .loader-container"),
+	hideForecast,
+);
 
 export function displayError(error) {
 	hideForecast();
