@@ -343,12 +343,12 @@ button {
 }
 
 .loader {
-	--width: 1.15rem;
-	width: var(--width);
+	width: 1rem;
 	aspect-ratio: 1 / 1;
-	border: calc(var(--width) / 2.5) dotted var(--shade-60);
+	border: 2px solid var(--shade-80);
+	border-bottom-color: transparent;
 	border-radius: 50%;
-	animation: rotation 1.25s linear infinite;
+	animation: rotation 1s linear infinite;
 }
 
 @keyframes rotation {
