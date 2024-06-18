@@ -36,7 +36,7 @@ export function renderCurrentForecast(weather) {
 
 	const weatherIcon = document.querySelector(".current .weather-icon");
 	weatherIcon.replaceChildren(
-		createWeatherIcon(weather.weatherCode, weather.isDay),
+		createWeatherIcon(weather.weatherCode, { isDay: weather.isDay }),
 	);
 	document.documentElement.dataset.theme = weather.isDay ? "day" : "night";
 }
@@ -87,7 +87,9 @@ function createWeatherModuleItem({
 	const weatherItem = document.createElement("li");
 
 	const weatherIcon = createTextElement("", ["weather-icon"], "div");
-	weatherIcon.replaceChildren(createWeatherIcon(weatherCode, isDay));
+	weatherIcon.replaceChildren(
+		createWeatherIcon(weatherCode, { isDay, fill: true }),
+	);
 
 	const dateStr = getFormattedDateTime(date ? date : time, "short");
 	const dayTimeEl = createTextElement(date ? dateStr.dayOfWeek : dateStr.time, [
@@ -138,7 +140,8 @@ function createPrecipitationModuleEL(value) {
 	return container;
 }
 
-function createWeatherIcon(weatherCode, isDay = true) {
+function createWeatherIcon(weatherCode, options = {}) {
+	const { isDay = true, fill = false } = options;
 	const iconCode = {
 		0: isDay ? 100 : 150,
 		1: isDay ? 102 : 152,
@@ -170,7 +173,9 @@ function createWeatherIcon(weatherCode, isDay = true) {
 		99: 304,
 	};
 	const icon = document.createElement("i");
-	icon.classList.add("icon", `qi-${iconCode[weatherCode]}`);
+	let iconClass = `qi-${iconCode[weatherCode]}`;
+	if (fill) iconClass += "-fill";
+	icon.classList.add("icon", iconClass);
 	return icon;
 }
 
