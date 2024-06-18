@@ -134,8 +134,13 @@ button {
 	.search-item {
 		cursor: pointer;
 
-		&:hover {
+		&:hover,
+		&:focus {
 			background-color: var(--shade-10);
+		}
+
+		&:focus {
+			outline-color: var(--shade-50);
 		}
 	}
 
