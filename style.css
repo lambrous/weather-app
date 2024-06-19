@@ -46,6 +46,8 @@ ul {
 
 button {
 	cursor: pointer;
+	border: none;
+	background-color: transparent;
 }
 
 .hidden {
@@ -71,9 +73,11 @@ button {
 	position: absolute;
 	left: 50%;
 	translate: -50%;
+	z-index: 99;
 
 	.search-bar-container {
 		padding-inline: var(--pad-inline);
+		position: relative;
 	}
 
 	input {
@@ -105,7 +109,7 @@ button {
 		box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 	}
 
-	.search-results:has(li) {
+	.search-results:has(li, .search-item:not(.hidden)) {
 		padding-block: 0.5rem;
 		position: relative;
 
@@ -121,7 +125,8 @@ button {
 		}
 	}
 
-	.search-results li {
+	.search-results li,
+	.search-results .search-item {
 		padding-block: 0.5em;
 		padding-inline: var(--pad-inline);
 		font-size: 1.125rem;
@@ -129,6 +134,12 @@ button {
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		overflow: hidden;
+		width: 100%;
+	}
+
+	.search-results li:not([class]) {
+		font-size: 1rem;
+		color: var(--shade-80);
 	}
 
 	.search-item {
@@ -141,6 +152,16 @@ button {
 
 		&:focus {
 			outline-color: var(--shade-50);
+		}
+	}
+
+	.search-item:has(.icon) {
+		display: flex;
+		align-items: center;
+		gap: 0.25em;
+
+		.icon svg {
+			height: 1em;
 		}
 	}
 
@@ -173,12 +194,6 @@ button {
 		display: flex;
 		align-items: center;
 		gap: 0.7em;
-	}
-
-	header {
-		display: flex;
-		align-items: end;
-		justify-content: space-between;
 	}
 }
 
@@ -242,6 +257,10 @@ button {
 	.info .value {
 		font-weight: 400;
 	}
+}
+
+#forecast {
+	position: relative;
 }
 
 #forecast .heading {
@@ -317,14 +336,15 @@ button {
 }
 
 .toggle-unit {
-	background-color: transparent;
-	border: none;
+	--pad: 0.5rem;
 	color: var(--shade-50);
 	font-weight: 300;
 	display: flex;
 	align-items: center;
 	line-height: 1;
-	--pad: 0.5rem;
+	position: absolute;
+	right: 0;
+	top: -3.5rem;
 
 	.metric {
 		padding-right: var(--pad);

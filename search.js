@@ -1,9 +1,11 @@
 import { createLoader } from "./content.js";
 import { debounce } from "./utils.js";
 
-const searchInput = document.querySelector("#search-bar");
-const searchResultsList = document.querySelector(".search-results");
 const searchContainer = document.querySelector("#search");
+const searchInput = document.querySelector("#search-bar");
+const searchResultsContainer = document.querySelector(".search-results");
+const searchResultsList = document.querySelector(".search-results .results");
+const preciseLocationButton = document.querySelector("#precise-location");
 
 function createSearchItemElement(text, clickHandler = null) {
 	const listItem = document.createElement("li");
@@ -49,12 +51,14 @@ export function handleSearchInput(onSearch) {
 }
 
 function hideSearchResults() {
-	searchResultsList.classList.add("hidden");
+	searchResultsContainer.classList.add("hidden");
+	preciseLocationButton.classList.add("hidden");
 	document.removeEventListener("click", hideListOnOutsideClick);
 }
 
 function showSearchResults() {
-	searchResultsList.classList.remove("hidden");
+	searchResultsContainer.classList.remove("hidden");
+	preciseLocationButton.classList.remove("hidden");
 	document.addEventListener("click", hideListOnOutsideClick);
 }
 
@@ -62,6 +66,16 @@ function hideListOnOutsideClick(event) {
 	if (!searchContainer.contains(event.target)) {
 		hideSearchResults();
 	}
+}
+
+export function requestPreciseLocation(onSuccess, onError) {
+	const handler = () => {
+		hideSearchResults();
+		navigator.geolocation.getCurrentPosition(onSuccess, onError, {
+			timeout: 6000,
+		});
+	};
+	preciseLocationButton.addEventListener("click", handler);
 }
 
 searchInput.addEventListener("focus", showSearchResults);

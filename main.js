@@ -122,4 +122,9 @@ function toggleUnit() {
 
 unitToggler.addEventListener("click", toggleUnit);
 searchBar.handleSearchInput(processLocationResults);
+searchBar.requestPreciseLocation(onGeoSuccess, (error) => {
+	content.displayLocation("");
+	content.displayError(error.message);
+	console.warn(`ERROR(${error.code}): ${error.message}`);
+});
 document.addEventListener("DOMContentLoaded", onLoad);
