@@ -340,6 +340,11 @@ button {
 		color: var(--shade-70);
 		font-weight: 700;
 	}
+
+	&:focus {
+		outline-color: var(--shade-50);
+		outline-offset: 0.6em;
+	}
 }
 
 .loader {
