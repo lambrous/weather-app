@@ -17,7 +17,7 @@ export async function getLocations(query) {
 			country: location.country,
 		}));
 
-	throw new Error("Location not found.");
+	throw new Error("Location not recognized. Try a different name.");
 }
 
 export async function getWeather(coordinates, useMetric = true) {
@@ -137,16 +137,30 @@ function getWeatherCondition(weatherCode) {
 }
 
 export async function getIpLocation() {
-	const response = await fetch("http://ip-api.com/json/", {
+	const response = await fetch("https://get.geojs.io/v1/ip/geo.json", {
 		mode: "cors",
 	});
 	if (!response.ok) throw new Error("Failed to fetch IP location.");
 	const location = await response.json();
 	return {
 		coordinates: {
-			lat: location.lat,
-			lon: location.lon,
+			lat: location.latitude,
+			lon: location.longitude,
 		},
-		displayName: `${location.city}, ${location.regionName}`,
+		displayName: `${location.city}, ${location.region}`,
 	};
+}
+
+export async function getAddress(lat, lon) {
+	const url = generateUrl("https://nominatim.openstreetmap.org/reverse", {
+		format: "jsonv2",
+		lat,
+		lon,
+	});
+
+	const response = await fetch(url, { mode: "cors" });
+	if (!response.ok) throw new Error("Failed to fetch address.");
+
+	const { display_name } = await response.json();
+	return display_name.split(",", 2).join();
 }

@@ -1,10 +1,23 @@
-import { getIpLocation, getLocations, getWeather } from "./weather.js";
+import {
+	getAddress,
+	getIpLocation,
+	getLocations,
+	getWeather,
+} from "./weather.js";
 import * as content from "./content.js";
 import * as searchBar from "./search.js";
 import { debounce } from "./utils.js";
 
 let currentLocation;
 let useMetric = true;
+
+const locationFallback = {
+	displayName: "Manila, Metro Manila",
+	coordinates: {
+		lon: 120.9822,
+		lat: 14.6042,
+	},
+};
 
 async function processLocationResults(query) {
 	searchBar.loader.start();
@@ -52,22 +65,39 @@ async function showForecast(coordinates = currentLocation.coordinates) {
 	content.loader.stop();
 }
 
-async function onLoad() {
+async function onGeoSuccess({ coords }) {
+	const { longitude, latitude } = coords;
+	const displayName = await getAddress(latitude, longitude);
+	switchLocation({
+		displayName,
+		coordinates: { lon: longitude, lat: latitude },
+	});
+}
+
+async function onGeoError() {
 	try {
-		const unit = localStorage.getItem("isMetric");
-		useMetric = unit ? JSON.parse(unit) : true;
-		updateTogglerStyles();
-
-		const locationData = localStorage.getItem("location");
-		const location = locationData
-			? JSON.parse(locationData)
-			: await getIpLocation();
-
+		const location = await getIpLocation();
 		switchLocation(location);
 	} catch (error) {
-		content.displayError(error.message);
-		console.error(error);
+		console.error(error.message);
+		switchLocation(locationFallback);
 	}
+}
+
+async function onLoad() {
+	const unit = localStorage.getItem("isMetric");
+	useMetric = unit ? JSON.parse(unit) : true;
+	updateTogglerStyles();
+
+	const locationData = localStorage.getItem("location");
+
+	if (!locationData) {
+		navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError, {
+			timeout: 5000,
+		});
+		return;
+	}
+	switchLocation(JSON.parse(locationData));
 }
 
 const unitToggler = document.querySelector(".toggle-unit");
