@@ -5,10 +5,11 @@ Welcome to my Weather App! This project is a part of [The Odin Project's JavaScr
 ## Features
 
 - **Current Weather:** Get the current weather information for your location or any city worldwide.
-- **Weather Forecast:** View the weather forecast for the upcoming days.
-- **Location Detection:** Automatically detect user location.
-- **Search by City:** Enter a city name to get weather information for that location.
-- **Weather Icons:** Display relevant weather icons to enhance user experience.
+- **Hourly Forecast:** Check the hourly weather forecast for more detailed information.
+- **Daily Forecast:** See an extended daily weather forecast.
+- **Precise Location Feature:** Allows for more accurate location detection.
+- **Temperature Unit Toggle:** Easily switch between Celsius and Fahrenheit units, with improved accessibility for the toggle button.
+- **Theme Switching:** Automatically switch between day and night themes based on the user's location.
 
 ## APIs Used
 
